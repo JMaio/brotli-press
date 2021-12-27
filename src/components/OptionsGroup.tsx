@@ -9,7 +9,6 @@ import {
   ToggleButtonGroup,
 } from '@mui/material';
 import React from 'react';
-import { UseBrotliWorkerInterface } from '../worker/useBrotliWorker';
 
 export enum BrotliModes {
   Compress = 'compress',
@@ -21,7 +20,6 @@ export interface OptionsGroupProps {
   running?: boolean;
   isReady?: boolean;
   modeState: [BrotliModes, React.Dispatch<React.SetStateAction<BrotliModes>>];
-  brotliWorker: UseBrotliWorkerInterface;
 }
 
 const OptionsGroup = ({

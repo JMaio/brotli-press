@@ -1,5 +1,6 @@
+import { GitHub } from '@mui/icons-material';
+import { Button, Typography } from '@mui/material';
 import React from 'react';
-import { Typography } from '@mui/material';
 
 const AppHeader = (props: any) => {
   return (
@@ -16,9 +17,19 @@ const AppHeader = (props: any) => {
       >
         brotli-press
       </Typography>
-      <Typography variant="subtitle1" paragraph sx={{ lineHeight: 1.5 }}>
-        Brotli compress / decompress in-browser with WebAssembly
+      <Typography variant="subtitle1" paragraph sx={{ lineHeight: 1.5, my: 1 }}>
+        Brotli de/compress in-browser with WebAssembly
       </Typography>
+      <Button
+        size="small"
+        variant="outlined"
+        startIcon={<GitHub />}
+        href="https://github.com/httptoolkit/brotli-wasm"
+        target="_blank"
+        sx={{ textTransform: 'none', fontFamily: 'monospace', borderRadius: 5 }}
+      >
+        brotli-wasm
+      </Button>
     </header>
   );
 };

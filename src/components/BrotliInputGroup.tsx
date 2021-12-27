@@ -7,8 +7,8 @@ import BrotliTextField from './BrotliTextInput';
 export interface BrotliInputProps {
   /** disables fields (such as when there is no output yet) */
   disabled?: boolean;
-  /** shows or hides this input */
-  modeSwitch: boolean;
+  /** is the current mode "compress"? */
+  modeCompress?: boolean;
   /** the use input hooks */
   brotliInput: UseTextOrFileInputInterface;
   /** callback to set ready status */
@@ -17,7 +17,9 @@ export interface BrotliInputProps {
 
 const BrotliInputGroup = ({
   disabled,
-  brotliInput: { textRef, fileRef, useFile },
+  modeCompress,
+  brotliInput: { text, file, setText, setFile, useFile },
+  // brotliInput: { textRef, fileRef, useFile },
   setIsReady,
 }: BrotliInputProps) => {
   const theme = useTheme();
@@ -28,6 +30,10 @@ const BrotliInputGroup = ({
   //     // tell the parent if there is input present
   //     setIsReady && setIsReady(Boolean(textRef.current?.value || fileRef.current?.value));
   //   }, [textRef, fileRef, setIsReady]);
+  useEffect(() => {
+    // tell the parent if there is input present
+    setIsReady && setIsReady(Boolean(text || file));
+  }, [text, file, setIsReady]);
 
   return (
     <Box
@@ -46,11 +52,18 @@ const BrotliInputGroup = ({
       }}
     >
       <BrotliTextField
-        placeholder="Text input"
+        // placeholder={(modeCompress ? 'Text' : 'Hex') + ' input'}
+        label={(modeCompress ? 'Text' : 'Hex') + ' input'}
         disabled={disabled || useFile}
-        inputRef={textRef}
-        // value={text}
-        onChange={e => setIsReady && setIsReady(Boolean(e.target.value))}
+        // inputRef={textRef}
+        value={text}
+        onChange={e => setText(e.target.value)}
+        // display the number of characters below the text field (decompress hex => 2 char = 1 byte)
+        helperText={
+          modeCompress
+            ? `${text.length} characters / bytes`
+            : `${text.length / 2} bytes`
+        }
       />
 
       <Divider

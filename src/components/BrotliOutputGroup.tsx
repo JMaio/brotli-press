@@ -1,19 +1,34 @@
 import { alpha, Box, Divider, useTheme } from '@mui/material';
-import React from 'react';
+import React, { useMemo } from 'react';
 import BrotliFileOutput from './BrotliFileOutput';
 import BrotliTextField from './BrotliTextInput';
 
 export interface BrotliInputProps {
   /** disables fields (such as when there is no output yet) */
   disabled?: boolean;
-  /** the output array buffer from brotli */
-  output?: string;
+  /** is the current mode "compress"? */
+  modeCompress?: boolean;
+  /** the output array buffer from brotli, the input size in bytes to compare against output as % compressed */
+  output: [string, number];
 }
 
-const BrotliInputGroup = ({ disabled, output }: BrotliInputProps) => {
+const BrotliInputGroup = ({
+  disabled,
+  modeCompress,
+  output: [output, inputSize],
+}: BrotliInputProps) => {
   const theme = useTheme();
 
   const boxColour = theme.palette.grey[400];
+
+  const outputPercent = useMemo(
+    () =>
+      (modeCompress
+        ? ((output.length / 2) * 100) / (inputSize || 1) // prevent zero division
+        : (output.length * 100) / (inputSize / 2 || 1)
+      ).toFixed(2),
+    [modeCompress, output, inputSize]
+  );
 
   return (
     <Box
@@ -33,7 +48,13 @@ const BrotliInputGroup = ({ disabled, output }: BrotliInputProps) => {
     >
       <BrotliTextField
         value={output}
-        placeholder="Text output"
+        // placeholder={(!modeCompress ? 'Text' : 'Hex') + ' output'}
+        label={(!modeCompress ? 'Text' : 'Hex') + ' output'}
+        helperText={
+          (modeCompress
+            ? `${output.length / 2} bytes`
+            : `${output.length} characters / bytes`) + ` (${outputPercent}%)`
+        }
         InputProps={{
           readOnly: true,
         }}

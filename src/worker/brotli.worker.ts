@@ -20,7 +20,7 @@ onmessage = async (e: MessageEvent<BrotliWorkerMessage>) => {
   postMessage(out);
 };
 
-// eslint-disable-next-line no-restricted-globals
-onerror = e => {
-  console.error('error from web worker', e);
-};
+// // eslint-disable-next-line no-restricted-globals
+// onerror = e => {
+//   console.error('error from web worker', e);
+// };

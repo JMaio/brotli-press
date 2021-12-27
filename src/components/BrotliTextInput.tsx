@@ -11,10 +11,12 @@ const BrotliTextField = ({ ...props }: TextFieldProps) => {
         // rows={5}
         maxRows={8}
         size="small"
-        // sx={{
-        //   // width: 160,
-        //   flexGrow: 1,
-        // }}
+        // display the number of characters below the text field in monospace font
+        sx={{
+          '& .MuiFormHelperText-root': {
+            fontFamily: 'monospace',
+          },
+        }}
         {...props}
       />
     </>
